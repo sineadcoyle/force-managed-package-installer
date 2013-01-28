@@ -77,10 +77,10 @@ public class Installer {
         else if (drivertype.equals("chrome")) {
         	System.out.println(System.getProperty("os.name"));
         	if ((System.getProperty("os.name").contains("Mac"))) {
-            	System.setProperty("webdriver.chrome.driver", "chrome/chromedriver");
+            	System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
         	}
         	else {
-        		System.setProperty("webdriver.chrome.driver", "chrome/chromedriver.exe");
+        		System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
         	}
         	ChromeOptions options = new ChromeOptions();
         	options.addArguments("--disable-extensions"); //removes Chrome extensions for this browser instance

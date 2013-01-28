@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="run-installer" basedir =".">
+
+    <property environment="env"/>
+    
+    <!-- Build for different target orgs by adding additional "Invoke Ant" build steps that set this property appropriately -->
+    
+    <property name="prefix" value="force-mgdpkge-installer-"/>
+    <property name="version" value="1.1"/>
+    <property name="suffix" value=".jar"/>
+    <property name="installer-jar" value="${prefix}${version}${suffix}"/>
+	
+    <target name="all" depends="clean, compile, create-installer-jar, run-installer"/>
+    
+    <target name="clean">
+        <delete failonerror="false">
+            <!-- Discard any jars except those for the current build revision (whatever org they are for) -->
+            <fileset dir="." includes="${prefix}*${suffix}" excludes="${prefix}*${version}${suffix}"/>
+        </delete>
+    </target>
+    
+    <target name="compile">
+        <mkdir dir="bin"/>
+        <javac debug="true" destdir="bin" target="1.6" includeantruntime="false">
+            <src path="src"/>
+            <classpath>
+                <fileset dir="lib">
+                    <include name="*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    
+    
+    <target name="create-installer-jar">
+        <jar destfile="${installer-jar}">
+            <manifest>
+                <attribute name="Main-Class" value="com.claimvantage.force.selenium.installer.ManagedPackageInstaller" />
+                <attribute name="Implementation-Title" value="ClaimVantage Package Installer" />
+                <attribute name="Implementation-Version" value="${version}" />
+            </manifest>
+            <fileset dir="bin">
+                <include name="com/claimvantage/force/selenium/installer/*.*"/>
+            	<include name="com/claimvantage/force/selenium/*.*"/>
+            	<include name="chrome/*.*"/>
+            </fileset>
+            <zipfileset src="lib/selenium-server-standalone-2.29.0.jar"/>
+            <zipfileset src="lib/json-lib-2.4-jdk15.jar"/>
+            <zipfileset src="lib/commons-cli-1.2.jar"/>
+        	<zipfileset src="lib/ant.jar"/>
+        	<zipfileset src="lib/commons-beanutils-1.8.3.jar"/>
+        	<zipfileset src="lib/commons-beanutils-bean-collections-1.8.3.jar"/>
+        	<zipfileset src="lib/commons-beanutils-core-1.8.3.jar"/>
+        	<zipfileset src="lib/ezmorph-1.0.6.jar"/>
+        	<zipfileset src="lib/commons-lang-2.6.jar"/>
+        </jar>
+    </target>
+
+    <target name="propertyValues">
+        <property file="properties/build.properties"/>
+    	<echo message="Attempting to run installer with properties : ${driver.type}, ${sf.url}, ${sf.un}, ${sf.pw}, ${sf.st}, ${pkge.url}, ${pkge.pw} and ${prof.map}"/>
+    </target>
+    
+     <target name="run-installer" depends="propertyValues">
+            <taskdef name="retrieveAndRunManagedPackageInstaller"
+                classname="com.claimvantage.force.selenium.installer.ManagedPackageInstaller"
+            	classpath="${installer-jar}"/>
+            <retrieveAndRunManagedPackageInstaller
+            	drivertype="${driver.type}"
+                sfurl="${sf.url}"
+                sfun="${sf.un}"
+                sfpw="${sf.pw}"
+            	sfst="${sf.st}"
+                pkgeurl="${pkge.url}"
+                pkgepw="${pkge.pw}"
+                profmap="${prof.map}"/>
+     </target>
+	
+</project>

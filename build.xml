@@ -70,7 +70,6 @@
                 sfurl="${sf.url}"
                 sfun="${sf.un}"
                 sfpw="${sf.pw}"
-            	sfst="${sf.st}"
                 pkgeurl="${pkge.url}"
                 pkgepw="${pkge.pw}"
                 profmap="${prof.map}"/>

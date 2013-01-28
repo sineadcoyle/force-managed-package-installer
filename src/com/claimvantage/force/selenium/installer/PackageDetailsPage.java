@@ -6,15 +6,10 @@ import com.claimvantage.force.selenium.PageBase;
 
 public class PackageDetailsPage extends PageBase {
 
-
     private static String CONTINUE_BUTTON = "//input[@value='Continue']";
     private static String GRANT_ACCESS = "//input[@type = 'checkbox']";
     private static String CONTINUE_BUTTON_POP_UP ="//div[@class='buttons']/input[@value='Continue']";
     private static String THIRD_PARTY_ACCESS_POP_UP = "//h2[text()='Approve Third-Party Access']";
-    
-    public PackageDetailsPage() {
-        //TODO:remove
-    }
     
     public PackageDetailsPage(WebDriver driver) {
         super(driver);

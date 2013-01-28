@@ -14,10 +14,6 @@ public class EndInstallPage extends PageBase {
     private static final Logger LOG =
             Logger.getLogger(ManagedPackageInstaller.class.getPackage().getName());
     
-    public EndInstallPage() {
-        //TODO:remove
-    }
-    
     public EndInstallPage(WebDriver driver) {
         super(driver);
     }
@@ -31,7 +27,6 @@ public class EndInstallPage extends PageBase {
     	if (isElementPresent(By.xpath(INSTALLING_PACKAGE)) || isElementPresent(By.xpath(INSTALLED_INTEGRATION))) {
             LOG.info("Package installed.");
             driver.quit();
-    		//System.exit(0);
     	}
     }
 }

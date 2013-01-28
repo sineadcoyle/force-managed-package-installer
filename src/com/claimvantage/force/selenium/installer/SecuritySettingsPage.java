@@ -17,10 +17,6 @@ public class SecuritySettingsPage extends PageBase {
     private static String NEXT_BUTTON_SECURITY = "//div[@class='pbBottomButtons']/input[@title='Next']"; 
     private static JSONObject PROFILE_MAP;
     
-    public SecuritySettingsPage() {
-        //TODO:remove
-    }
-    
     public SecuritySettingsPage(WebDriver driver, JSONObject profmap) {
         super(driver);
         PROFILE_MAP = profmap;

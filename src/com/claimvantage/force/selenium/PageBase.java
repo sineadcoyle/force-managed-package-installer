@@ -47,7 +47,6 @@ public class PageBase {
         return false;
     }
     
-    
     public boolean isElementPresent(By locatorKey) {
         try {
             driver.findElement(locatorKey);

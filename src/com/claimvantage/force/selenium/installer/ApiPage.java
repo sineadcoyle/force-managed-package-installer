@@ -10,10 +10,6 @@ public class ApiPage extends PageBase {
     
     private static String NEXT_BUTTON_API = "//div[@class='pbBottomButtons']/input[@title='Next']";
     
-    public ApiPage() {
-        //TODO:remove
-    }
-    
     public ApiPage(WebDriver driver) {
         super(driver);
     }

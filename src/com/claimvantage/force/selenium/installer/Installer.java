@@ -25,7 +25,7 @@ public class Installer {
     private static final Logger LOG =
             Logger.getLogger(ManagedPackageInstaller.class.getPackage().getName());
     
-    public Installer(String drivertype, String sfurl, String sfun, String sfpw, String sfst, String pkgeurl, String pkgepw, JSONObject profmap) {
+    public Installer(String drivertype, String sfurl, String sfun, String sfpw, String pkgeurl, String pkgepw, JSONObject profmap) {
         setDriverType(drivertype);
         login = new LoginPage(driver, sfurl, sfun, sfpw);
         sip = new StartInstallPage(driver, pkgeurl, pkgepw);
@@ -76,10 +76,10 @@ public class Installer {
         
         else if (drivertype.equals("chrome")) {
         	System.out.println(System.getProperty("os.name"));
-        	if ((System.getProperty("os.name").contains("Mac"))) {
+        	if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedirver for MAc
             	System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
         	}
-        	else {
+        	else {													//otherwise use the .exe
         		System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
         	}
         	ChromeOptions options = new ChromeOptions();

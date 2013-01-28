@@ -11,11 +11,7 @@ public class StartInstallPage extends PageBase{
     
     private static final String PKGEPW_XPATH = "//input[@type='password']";
     private static final String SUBMIT_XPATH = "//input[@type='submit']";
-    
-    public StartInstallPage() {
-        //TODO:remove
-    }
-    
+
     public StartInstallPage(WebDriver driver, String pkgeurl, String pkgepw) {
         super(driver);
         PKGE_URL = pkgeurl;

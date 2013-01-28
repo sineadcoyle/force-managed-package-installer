@@ -24,7 +24,6 @@ public class ManagedPackageInstaller extends Task {
 	private String sfurl;
 	private String sfun;
 	private String sfpw;
-	private String sfst;
 	private String pkgeurl;
 	private String pkgepw;
 	private JSONObject profmap;
@@ -35,7 +34,7 @@ public class ManagedPackageInstaller extends Task {
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
 		}
-		Installer i = new Installer(drivertype, sfurl, sfun, sfpw, sfst, pkgeurl, pkgepw, profmap);
+		Installer i = new Installer(drivertype, sfurl, sfun, sfpw, pkgeurl, pkgepw, profmap);
         i.execute();
 	}
 	
@@ -53,10 +52,6 @@ public class ManagedPackageInstaller extends Task {
 	
 	public void setSfpw(String sfpw) {
 		this.sfpw = sfpw;
-	}
-	
-	public void setSfst(String sfst)  {
-		this.sfst = sfst;
 	}
 	
 	public void setPkgeurl(String pkgeurl) {

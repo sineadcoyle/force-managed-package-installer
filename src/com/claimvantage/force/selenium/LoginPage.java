@@ -11,10 +11,6 @@ public class LoginPage extends PageBase{
     private static String SF_URL;
     private static String SF_USERNAME;
     private static String SF_PASSWORD;
-
-    public LoginPage() {
-        //TODO:remove
-    }
     
     public LoginPage(WebDriver driver) {
     	SF_URL = "https://login.salesforce.com";

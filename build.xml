@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="project" default="run-installer" basedir =".">
+<project name="project" default="run-installer-task" basedir =".">
+	
+	<record name="build.log" loglevel="verbose" action="start" />
 
     <property environment="env"/>
     
@@ -10,7 +12,7 @@
     <property name="suffix" value=".jar"/>
     <property name="installer-jar" value="${prefix}${version}${suffix}"/>
 	
-    <target name="all" depends="clean, compile, create-installer-jar, run-installer"/>
+    <target name="all" depends="clean, compile, create-installer-jar, run-installer-task"/>
     
     <target name="clean">
         <delete failonerror="false">
@@ -58,10 +60,11 @@
 
     <target name="propertyValues">
         <property file="properties/build.properties"/>
+        <property name="prof.map" value=""/>
     	<echo message="Attempting to run installer with properties : ${driver.type}, ${sf.url}, ${sf.un}, ${sf.pw}, ${sf.st}, ${pkge.url}, ${pkge.pw} and ${prof.map}"/>
     </target>
     
-     <target name="run-installer" depends="propertyValues">
+     <target name="run-installer-task" depends="propertyValues">
             <taskdef name="retrieveAndRunManagedPackageInstaller"
                 classname="com.claimvantage.force.selenium.installer.ManagedPackageInstaller"
             	classpath="${installer-jar}"/>

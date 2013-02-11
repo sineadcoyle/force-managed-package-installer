@@ -13,7 +13,7 @@ public class LoginPage extends PageBase{
     private static String SF_PASSWORD;
     
     public LoginPage(WebDriver driver) {
-    	SF_URL = "https://login.salesforce.com";
+        SF_URL = "https://login.salesforce.com";
         SF_USERNAME = "example@testing.com";
         SF_PASSWORD = "XXXXX";
     }

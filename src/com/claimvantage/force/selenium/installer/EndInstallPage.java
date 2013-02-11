@@ -24,9 +24,9 @@ public class EndInstallPage extends PageBase {
     }
     
     public void installed() {
-    	if (isElementPresent(By.xpath(INSTALLING_PACKAGE)) || isElementPresent(By.xpath(INSTALLED_INTEGRATION))) {
+        if (isElementPresent(By.xpath(INSTALLING_PACKAGE)) || isElementPresent(By.xpath(INSTALLED_INTEGRATION))) {
             LOG.info("Package installed.");
             driver.quit();
-    	}
+        }
     }
 }

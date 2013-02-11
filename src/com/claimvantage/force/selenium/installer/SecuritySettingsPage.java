@@ -27,20 +27,21 @@ public class SecuritySettingsPage extends PageBase {
             waitForElementPresent(SECURITY_SETTINGS, 2);
             driver.findElement(By.xpath(SECURITY_SETTINGS)).click();
             if (!PROFILE_MAP.isEmpty()) {
-            	Iterator<?> i = PROFILE_MAP.keys();
-    			while (i.hasNext()) {
-    				String key = (String) i.next();
-    				String value = PROFILE_MAP.getString(key);
-    				driver.findElement(By.xpath("//tr[th[contains(text(), '" + key + "')]]/td/select/option[@value='" + value + "']")).click();
-    			}
+                Iterator<?> i = PROFILE_MAP.keys();
+                while (i.hasNext()) {
+                    String key = (String) i.next();
+                    String value = PROFILE_MAP.getString(key);
+                    driver.findElement(By.xpath("//tr[th[contains(text(), '" + key + "')]]/td/select/option[@value='" + value + "']")).click();
+                }
             }
             Capabilities cp = ((RemoteWebDriver) driver).getCapabilities();
             if (cp.getBrowserName().equals("chrome")) {
+                //chrome bug where button is clicked in centre location (can be on chat icon) - need to scroll, otherwise does not click accurately
                 try {
                     ((JavascriptExecutor) driver).executeScript(
-                    		"window.scrollTo(0, document.body.scrollHeight);");
+                            "window.scrollTo(0, document.body.scrollHeight);");
                 } catch (Exception e) {
-                	System.out.println(e.getMessage());
+                    System.out.println(e.getMessage());
                 }
             }
             driver.findElement(By.xpath(NEXT_BUTTON_SECURITY)).click();
@@ -61,6 +62,6 @@ public class SecuritySettingsPage extends PageBase {
     }
     
     public boolean isMapPresent() {
-    	return !(PROFILE_MAP == null);
+        return !(PROFILE_MAP == null);
     }
 }

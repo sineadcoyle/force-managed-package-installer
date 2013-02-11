@@ -20,7 +20,7 @@ public class PackageDetailsPage extends PageBase {
     }
     
     public boolean thirdPartyAccessPopUpPresent() {
-    	return isElementPresent(By.xpath(THIRD_PARTY_ACCESS_POP_UP));
+        return isElementPresent(By.xpath(THIRD_PARTY_ACCESS_POP_UP));
     }
     
     public void detailsPagePopUp () {

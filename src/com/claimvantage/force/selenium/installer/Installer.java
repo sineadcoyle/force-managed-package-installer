@@ -38,20 +38,21 @@ public class Installer {
     
     public void execute() {
         login.getLoginPage(); //navigate to login page
-        login.loginAs(); //login
         LOG.info("Logging in.");
+        login.loginAs(); //login
         sip.navigateToInstallPage(); //navigate to install package url with password
+        if (sip.passwordIsRequired()) {
+            sip.enterPackagePassword();
+        }
         pdp.detailsPageContinue(); //details page continue
         
         //upgrade install
         if (udp.isUpdate()) {
             udp.detailsPageConfirmationUpgrade();
-        }
-        
-        //fresh install
-        else {
-            //needed for api access
+        } else {
+            //fresh install
             if (pdp.thirdPartyAccessPopUpPresent()) {
+                //needed for api access
                 pdp.detailsPagePopUp();
             }
         }
@@ -59,8 +60,7 @@ public class Installer {
         api.apiPageConfirmation();
         if((ssp.isOnSettingsPage()==true)&&(ssp.isMapPresent()==true)) {
             ssp.securitySettings();
-        }
-        else if (ssp.isOnSettingsPage()==true) {
+        } else if (ssp.isOnSettingsPage()==true) {
             ssp.securitySettingsNext();
         }
         eip.endInstall();
@@ -68,28 +68,23 @@ public class Installer {
     
     private void setDriverType(String drivertype) {
         if (drivertype.equals("firefox")) {
-        	driver = new FirefoxDriver();
+            driver = new FirefoxDriver();
             if (!((RemoteWebDriver)driver).getCapabilities().getVersion().contains("16.0")) {
-            	LOG.warning("Selenium Webdriver not fully compatible with Firefox above version 16.");
+                LOG.warning("Selenium Webdriver not fully compatible with Firefox above version 16.");
             }
-        }
-        
-        else if (drivertype.equals("chrome")) {
-        	System.out.println(System.getProperty("os.name"));
-        	if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedirver for MAc
-            	System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
-        	}
-        	else {													//otherwise use the .exe
-        		System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
-        	}
-        	ChromeOptions options = new ChromeOptions();
-        	options.addArguments("--disable-extensions"); //removes Chrome extensions for this browser instance
-        	driver = new ChromeDriver(options);
-        }
-        
-        else {
-        	LOG.warning("No browser specified. Defaulting to Firefox webdriver.");
-        	driver = new FirefoxDriver();
+        } else if (drivertype.equals("chrome")) {
+            System.out.println(System.getProperty("os.name"));
+            if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedirver for MAc
+                System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
+            } else {                                                    //otherwise use the .exe
+                System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
+            }
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--disable-extensions"); //removes Chrome extensions for this browser instance
+            driver = new ChromeDriver(options);
+        } else {
+            LOG.warning("No browser specified. Defaulting to Firefox webdriver.");
+            driver = new FirefoxDriver();
         }
 
         //print name and version of browser for debugging

@@ -15,7 +15,7 @@ public class ApiPage extends PageBase {
     }
 
     public void apiPageConfirmation () {
-    	((JavascriptExecutor) driver).executeScript("window.scrollTo(0,"+driver.findElement(By.xpath(NEXT_BUTTON_API)).getLocation().y+")");
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0,"+driver.findElement(By.xpath(NEXT_BUTTON_API)).getLocation().y+")");
         driver.findElement(By.xpath(NEXT_BUTTON_API)).click();
     }
 }

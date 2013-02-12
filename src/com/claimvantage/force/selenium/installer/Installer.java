@@ -1,7 +1,8 @@
 package com.claimvantage.force.selenium.installer;
 
 import java.util.logging.Logger;
-import net.sf.json.JSONObject;
+
+import org.json.simple.JSONObject;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;

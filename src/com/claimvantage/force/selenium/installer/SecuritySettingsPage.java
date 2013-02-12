@@ -1,8 +1,9 @@
 package com.claimvantage.force.selenium.installer;
 
 import java.util.Iterator;
-
-import net.sf.json.JSONObject;
+import java.util.Map;
+import java.util.Map.Entry;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +17,7 @@ public class SecuritySettingsPage extends PageBase {
     private static String SECURITY_SETTINGS = "//td[label[contains(text(), 'Select security settings')]]/input";
     private static String NEXT_BUTTON_SECURITY = "//div[@class='pbBottomButtons']/input[@title='Next']"; 
     private static JSONObject PROFILE_MAP;
+    private Map<String, String> profileMap;
     
     public SecuritySettingsPage(WebDriver driver, JSONObject profmap) {
         super(driver);
@@ -26,11 +28,12 @@ public class SecuritySettingsPage extends PageBase {
         try {
             waitForElementPresent(SECURITY_SETTINGS, 2);
             driver.findElement(By.xpath(SECURITY_SETTINGS)).click();
-            if (!PROFILE_MAP.isEmpty()) {
-                Iterator<?> i = PROFILE_MAP.keys();
+              if (!(PROFILE_MAP.isEmpty())) {
+                Iterator<Map.Entry<String, String>> i = profileMap.entrySet().iterator();
                 while (i.hasNext()) {
-                    String key = (String) i.next();
-                    String value = PROFILE_MAP.getString(key);
+                    Entry<String, String> currentEntry = (Entry<String, String>)i.next();
+                    String key = (String) currentEntry.getKey();
+                    String value = (String) currentEntry.getValue();
                     driver.findElement(By.xpath("//tr[th[contains(text(), '" + key + "')]]/td/select/option[@value='" + value + "']")).click();
                 }
             }

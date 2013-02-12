@@ -17,7 +17,7 @@
     <target name="clean">
         <delete failonerror="false">
             <!-- Discard any jars except those for the current build revision (whatever org they are for) -->
-            <fileset dir="." includes="${prefix}*${suffix}" excludes="${prefix}*${version}${suffix}"/>
+            <fileset dir="." includes="${prefix}*${version}${suffix}"/>
         </delete>
     </target>
     
@@ -43,18 +43,14 @@
             </manifest>
             <fileset dir="bin">
                 <include name="com/claimvantage/force/selenium/installer/*.*"/>
-            	<include name="com/claimvantage/force/selenium/*.*"/>
-            	<include name="chrome/*.*"/>
+            	<include name="com/claimvantage/force/selenium/*.*"/>           	
             </fileset>
+        	<fileset dir="chromedriver">
+        	    <include name="*.*"/>
+        	</fileset>
             <zipfileset src="lib/selenium-server-standalone-2.29.0.jar"/>
-            <zipfileset src="lib/json-lib-2.4-jdk15.jar"/>
-            <zipfileset src="lib/commons-cli-1.2.jar"/>
         	<zipfileset src="lib/ant.jar"/>
-        	<zipfileset src="lib/commons-beanutils-1.8.3.jar"/>
-        	<zipfileset src="lib/commons-beanutils-bean-collections-1.8.3.jar"/>
-        	<zipfileset src="lib/commons-beanutils-core-1.8.3.jar"/>
-        	<zipfileset src="lib/ezmorph-1.0.6.jar"/>
-        	<zipfileset src="lib/commons-lang-2.6.jar"/>
+        	<zipfileset src="lib/json-simple-1.1.1.jar"/>
         </jar>
     </target>
 

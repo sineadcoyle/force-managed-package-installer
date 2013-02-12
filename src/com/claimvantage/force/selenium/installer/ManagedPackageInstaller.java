@@ -1,16 +1,14 @@
 package com.claimvantage.force.selenium.installer;
 
-import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 public class ManagedPackageInstaller extends Task {
     
@@ -65,10 +63,11 @@ public class ManagedPackageInstaller extends Task {
         this.pkgepw = pkgepw;
     }
     
-    public void setProfmap(String profmap) {
+    public void setProfmap(String profmap){
         //check if prof.map is included in properties and is not blank
         if (!profmap.isEmpty() && !profmap.equals("${prof.map}")) {
-            this.profmap = (JSONObject) JSONSerializer.toJSON(profmap);
+            Object obj = JSONValue.parse(profmap);
+            this.profmap = (JSONObject)obj;
         }
     }
     
@@ -76,7 +75,7 @@ public class ManagedPackageInstaller extends Task {
         return propertyFailureMessage;
     }
 
-    private void setup() throws SecurityException, IOException, Exception {
+    private void setup() throws Exception {
         Logger logger = Logger.getLogger("");
         logger.setLevel(Level.INFO);
         fileTxt = new FileHandler("ManagedPackageInstaller-" + System.currentTimeMillis() + ".log");
@@ -93,17 +92,17 @@ public class ManagedPackageInstaller extends Task {
     }
     
     private void validate() {
-        //check that required properties are not null
-        if (sfurl.equals("") || sfurl.equals("${sf.url}")) {
+        //check that required properties are null, blank or absent from build.properties file
+        if (sfurl == null || sfurl.equals("") || sfurl.equals("${sf.url}")) {
             propertyFailureMessage += "\nNo Saleforce URL specified.";
         }
-        if (sfun.equals("") || sfun.equals("${sf.un}")) {
+        if (sfun == null || sfun.equals("") || sfun.equals("${sf.un}")) {
             propertyFailureMessage += "\nNo Saleforce username specified.";
         }
-        if (sfpw.equals("") || sfpw.equals("${sf.pw}")) {
+        if (sfpw == null || sfpw.equals("") || sfpw.equals("${sf.pw}")) {
             propertyFailureMessage += "\nNo Saleforce password specified.";
         }
-        if (pkgeurl.equals("") || pkgeurl.equals("${pkge.url}")) {
+        if (pkgeurl == null || pkgeurl.equals("") || pkgeurl.equals("${pkge.url}")) {
             propertyFailureMessage += "\nNo package URL specified.";
         }
     }

@@ -11,8 +11,8 @@ public class PackageDetailsPage extends PageBase {
     private static String CONTINUE_BUTTON_POP_UP ="//div[@class='buttons']/input[@value='Continue']";
     private static String THIRD_PARTY_ACCESS_POP_UP = "//h2[text()='Approve Third-Party Access']";
     
-    public PackageDetailsPage(WebDriver driver) {
-        super(driver);
+    public PackageDetailsPage(WebDriver driver, ManagedPackageInstaller task) {
+        super(driver, task);
     }
     
     public void detailsPageContinue() {

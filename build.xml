@@ -56,8 +56,8 @@
 
     <target name="propertyValues">
         <property file="properties/build.properties"/>
-        <property name="prof.map" value=""/>
-    	<echo message="Attempting to run installer with properties : ${driver.type}, ${sf.url}, ${sf.un}, ${sf.pw}, ${sf.st}, ${pkge.url}, ${pkge.pw} and ${prof.map}"/>
+        <property name="profiles" value=""/>
+    	<echo message="Attempting to run installer with properties : ${driver.type}, ${sf.url}, ${sf.un}, ${sf.pw}, ${pkge.url}, ${pkge.pw} and ${profiles}"/>
     </target>
     
      <target name="run-installer-task" depends="propertyValues">
@@ -71,7 +71,7 @@
                 sfpw="${sf.pw}"
                 pkgeurl="${pkge.url}"
                 pkgepw="${pkge.pw}"
-                profmap="${prof.map}"/>
+                profiles="${profiles}"/>
      </target>
 	
 </project>

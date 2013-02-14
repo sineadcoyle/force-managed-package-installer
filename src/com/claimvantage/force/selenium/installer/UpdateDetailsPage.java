@@ -11,8 +11,8 @@ public class UpdateDetailsPage extends PageBase {
     private static String HANDLE_COMPONENTS_RADIO_BUTTON = "//td[label[contains(text(), 'Block installation and list conflicts')]]/input";
     private static String NEXT_BUTTON_HANDLE_COMPONENTS = "//input[@title='Next']";
 
-    public UpdateDetailsPage(WebDriver driver) {
-        super(driver);
+    public UpdateDetailsPage(WebDriver driver, ManagedPackageInstaller task) {
+        super(driver, task);
     }
 
     public void detailsPageConfirmationUpgrade() {
@@ -25,6 +25,6 @@ public class UpdateDetailsPage extends PageBase {
     }
     
     public boolean isUpdate() {
-        return (isElementPresent(By.xpath(getHandleComponentsHeader())));
+        return isElementPresent(By.xpath(getHandleComponentsHeader()));
     }
 }

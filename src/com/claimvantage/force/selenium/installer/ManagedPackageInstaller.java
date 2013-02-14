@@ -1,9 +1,7 @@
 package com.claimvantage.force.selenium.installer;
 
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -12,62 +10,96 @@ import org.json.simple.JSONValue;
 
 public class ManagedPackageInstaller extends Task {
     
-    static private FileHandler fileTxt;
-    static private SimpleFormatter formatterTxt;
-    
-    private static final Logger LOG =
-            Logger.getLogger(ManagedPackageInstaller.class.getPackage().getName());
-    
     private String drivertype;
     private String sfurl;
     private String sfun;
     private String sfpw;
     private String pkgeurl;
     private String pkgepw;
-    private JSONObject profmap;
-    
+    private Map<String, String> profmap = new HashMap<String, String>();
+    private String profiles;
     private String propertyFailureMessage;
     
     public void execute() throws BuildException {
         try {
             validate();
             setup();
-            Installer i = new Installer(drivertype, sfurl, sfun, sfpw, pkgeurl, pkgepw, profmap);
-            i.execute();
+            Installer i = new Installer(this);
+            i.execute(this);
         } catch (Exception e) {
-            LOG.severe(e.getMessage());
+            log(e.getMessage());
+            throw new BuildException(e.getMessage(), e);
         }
+    }
+    
+    public String getDrivertype() {
+        return drivertype;
     }
     
     public void setDrivertype(String drivertype) {
         this.drivertype = drivertype;
     }
     
+    public String getSfurl() {
+        return sfurl;
+    }
+    
     public void setSfurl(String sfurl) {
         this.sfurl = sfurl;
+    }
+    
+    public String getSfun() {
+        return sfun;
     }
     
     public void setSfun(String sfun)  {
         this.sfun = sfun;
     }
     
+    public String getSfpw() {
+        return sfpw;
+    }
+    
     public void setSfpw(String sfpw) {
         this.sfpw = sfpw;
+    }
+    
+    public String getPkgeurl() {
+        return pkgeurl;
     }
     
     public void setPkgeurl(String pkgeurl) {
         this.pkgeurl = pkgeurl;
     }
     
+    public String getPkgepw() {
+        return pkgepw;
+    }
+    
     public void setPkgepw(String pkgepw) {
         this.pkgepw = pkgepw;
     }
     
-    public void setProfmap(String profmap){
-        //check if prof.map is included in properties and is not blank
-        if (!profmap.isEmpty() && !profmap.equals("${prof.map}")) {
-            Object obj = JSONValue.parse(profmap);
-            this.profmap = (JSONObject)obj;
+    public Map<String, String> getProfmap() {
+        return profmap;
+    }
+    
+    public String getProfiles() {
+        return profiles;
+    }
+    
+    public void setProfiles(String profiles) {
+        //check if profiles is included in properties and is not blank
+        this.profiles = profiles;
+        if (profiles != null && !profiles.isEmpty() && !profiles.equals("${profiles}")) {
+            JSONObject obj = (JSONObject) JSONValue.parse(profiles);
+            if (obj == null) {
+                propertyFailureMessage += "Incorrect JSON Object syntax";
+            }
+            for (Object key : obj.keySet()) {
+                Object value = obj.get(key);
+                profmap.put((String) key, (String) value);
+            }
         }
     }
     
@@ -75,19 +107,10 @@ public class ManagedPackageInstaller extends Task {
         return propertyFailureMessage;
     }
 
-    private void setup() throws Exception {
-        Logger logger = Logger.getLogger("");
-        logger.setLevel(Level.INFO);
-        fileTxt = new FileHandler("ManagedPackageInstaller-" + System.currentTimeMillis() + ".log");
-
-        // Create txt Formatter
-        formatterTxt = new SimpleFormatter();
-        fileTxt.setFormatter(formatterTxt);
-        logger.addHandler(fileTxt);
-        
+    private void setup() {
         if (getFailureMessage() != null) {
-            System.out.println(getFailureMessage());
-            throw new Exception (getFailureMessage());
+            log(getFailureMessage());
+            throw new RuntimeException (getFailureMessage());
         }
     }
     

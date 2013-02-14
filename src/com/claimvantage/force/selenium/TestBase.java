@@ -9,12 +9,10 @@ public abstract class TestBase {
         try {
             driver.findElement(locatorKey);
             return true;
-        } 
-        catch (org.openqa.selenium.NoSuchElementException e) {
-            return false;
-        }
-        catch (org.openqa.selenium.TimeoutException ex) {
-            return false;
+        } catch (org.openqa.selenium.NoSuchElementException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (org.openqa.selenium.TimeoutException ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
         }
     }
 }

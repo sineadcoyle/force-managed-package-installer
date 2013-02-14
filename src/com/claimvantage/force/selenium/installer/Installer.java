@@ -1,8 +1,6 @@
 package com.claimvantage.force.selenium.installer;
 
-import java.util.logging.Logger;
-
-import org.json.simple.JSONObject;
+import org.apache.tools.ant.Project;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -22,24 +20,21 @@ public class Installer {
     private EndInstallPage eip;
 
     private WebDriver driver;
-
-    private static final Logger LOG =
-            Logger.getLogger(ManagedPackageInstaller.class.getPackage().getName());
     
-    public Installer(String drivertype, String sfurl, String sfun, String sfpw, String pkgeurl, String pkgepw, JSONObject profmap) {
-        setDriverType(drivertype);
-        login = new LoginPage(driver, sfurl, sfun, sfpw);
-        sip = new StartInstallPage(driver, pkgeurl, pkgepw);
-        pdp = new PackageDetailsPage(driver);
-        udp = new UpdateDetailsPage(driver);
-        api = new ApiPage(driver);
-        ssp = new SecuritySettingsPage(driver, profmap);
-        eip = new EndInstallPage(driver);
+    public Installer(ManagedPackageInstaller task) {
+        setDriverType(task);
+        login = new LoginPage(driver, task);
+        sip = new StartInstallPage(driver, task);
+        pdp = new PackageDetailsPage(driver, task);
+        udp = new UpdateDetailsPage(driver, task);
+        api = new ApiPage(driver, task);
+        ssp = new SecuritySettingsPage(driver, task);
+        eip = new EndInstallPage(driver, task);
     }
     
-    public void execute() {
+    public void execute(ManagedPackageInstaller task) {
         login.getLoginPage(); //navigate to login page
-        LOG.info("Logging in.");
+        task.log("Logging in.", Project.MSG_INFO);
         login.loginAs(); //login
         sip.navigateToInstallPage(); //navigate to install package url with password
         if (sip.passwordIsRequired()) {
@@ -59,39 +54,39 @@ public class Installer {
         }
         
         api.apiPageConfirmation();
-        if((ssp.isOnSettingsPage()==true)&&(ssp.isMapPresent()==true)) {
+        if (ssp.isOnSettingsPage() && ssp.isMapPresent()) {
             ssp.securitySettings();
-        } else if (ssp.isOnSettingsPage()==true) {
+        } else if (ssp.isOnSettingsPage()) {
             ssp.securitySettingsNext();
         }
         eip.endInstall();
     }
     
-    private void setDriverType(String drivertype) {
-        if (drivertype.equals("firefox")) {
+    private void setDriverType(ManagedPackageInstaller task) {
+        String drivertype = task.getDrivertype();
+        if ("firefox".equalsIgnoreCase(drivertype)) {
             driver = new FirefoxDriver();
-            if (!((RemoteWebDriver)driver).getCapabilities().getVersion().contains("16.0")) {
-                LOG.warning("Selenium Webdriver not fully compatible with Firefox above version 16.");
-            }
-        } else if (drivertype.equals("chrome")) {
-            System.out.println(System.getProperty("os.name"));
-            if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedirver for MAc
+        } else if ("chrome".equalsIgnoreCase(drivertype)) {
+            task.log(System.getProperty("os.name"), Project.MSG_VERBOSE);
+            if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedriver for Mac
+                task.log("Using Mac OS, using chromedriver for Mac.", Project.MSG_INFO);
                 System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
             } else {                                                    //otherwise use the .exe
+                task.log("Using chromedriver.exe", Project.MSG_INFO);
                 System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
             }
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-extensions"); //removes Chrome extensions for this browser instance
             driver = new ChromeDriver(options);
         } else {
-            LOG.warning("No browser specified. Defaulting to Firefox webdriver.");
+            task.log("No browser specified. Defaulting to Firefox webdriver.", Project.MSG_WARN);
             driver = new FirefoxDriver();
         }
 
-        //print name and version of browser for debugging
+        //print name and version of browser
         Capabilities caps = ((RemoteWebDriver)driver).getCapabilities();
         String browserName = caps.getBrowserName();
         String browserVersion = caps.getVersion();
-        System.out.println(browserName + " " + browserVersion);
+        task.log(browserName + " " + browserVersion, Project.MSG_INFO);
     }
 }

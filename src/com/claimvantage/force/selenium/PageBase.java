@@ -3,6 +3,7 @@ package com.claimvantage.force.selenium;
 import org.apache.tools.ant.Project;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.claimvantage.force.selenium.installer.ManagedPackageInstaller;
 
@@ -37,10 +38,10 @@ public class PageBase {
                 task.log("Waiting for xpath element - " + xpath, Project.MSG_VERBOSE);
                 if (isElementPresent(By.xpath(xpath))) return true;
                 Thread.sleep(1000);
-            } catch (org.openqa.selenium.NoSuchElementException e) {
+            } catch (NoSuchElementException e) {
                 throw new RuntimeException(e.getMessage() + " - could not find element " + xpath, e);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return false;
@@ -50,10 +51,10 @@ public class PageBase {
         try {
             driver.findElement(locatorKey);
             return true;
-        } catch (org.openqa.selenium.NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return false;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex.getMessage(), ex);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

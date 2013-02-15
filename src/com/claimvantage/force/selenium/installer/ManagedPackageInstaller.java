@@ -23,9 +23,9 @@ public class ManagedPackageInstaller extends Task {
     public void execute() throws BuildException {
         try {
             validate();
-            setup();
-            Installer i = new Installer(this);
-            i.execute(this);
+            new Installer(this).execute(this);
+        } catch (BuildException e) {
+            throw e;
         } catch (Exception e) {
             log(e.getMessage());
             throw new BuildException(e.getMessage(), e);
@@ -92,13 +92,17 @@ public class ManagedPackageInstaller extends Task {
         //check if profiles is included in properties and is not blank
         this.profiles = profiles;
         if (profiles != null && !profiles.isEmpty() && !profiles.equals("${profiles}")) {
-            JSONObject obj = (JSONObject) JSONValue.parse(profiles);
-            if (obj == null) {
-                propertyFailureMessage += "Incorrect JSON Object syntax";
-            }
-            for (Object key : obj.keySet()) {
-                Object value = obj.get(key);
-                profmap.put((String) key, (String) value);
+            try {
+                JSONObject obj = (JSONObject) JSONValue.parse(profiles);
+                for (Object key : obj.keySet()) {
+                    Object value = obj.get(key);
+                    profmap.put((String) key, (String) value);
+                }
+            } catch (Exception e) {
+                throw new BuildException("Failed to parse profiles JSON string " 
+                        + profiles 
+                        + "; expecting it to be composed of simple key/value pairs but parse failed with error: " 
+                        + e.getMessage());
             }
         }
     }
@@ -106,15 +110,9 @@ public class ManagedPackageInstaller extends Task {
     public String getFailureMessage() {
         return propertyFailureMessage;
     }
-
-    private void setup() {
-        if (getFailureMessage() != null) {
-            log(getFailureMessage());
-            throw new RuntimeException (getFailureMessage());
-        }
-    }
     
-    private void validate() {
+    private void validate() throws BuildException {
+        propertyFailureMessage = "";
         //check that required properties are null, blank or absent from build.properties file
         if (sfurl == null || sfurl.equals("") || sfurl.equals("${sf.url}")) {
             propertyFailureMessage += "\nNo Saleforce URL specified.";
@@ -127,6 +125,9 @@ public class ManagedPackageInstaller extends Task {
         }
         if (pkgeurl == null || pkgeurl.equals("") || pkgeurl.equals("${pkge.url}")) {
             propertyFailureMessage += "\nNo package URL specified.";
+        }
+        if (propertyFailureMessage.length()>0) {
+            throw new BuildException(propertyFailureMessage);
         }
     }
 }

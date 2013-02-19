@@ -8,7 +8,7 @@
     <!-- Build for different target orgs by adding additional "Invoke Ant" build steps that set this property appropriately -->
     
     <property name="prefix" value="ant-force-managed-package-installer-"/>
-    <property name="version" value="1.1"/>
+    <property name="version" value="1.2"/>
     <property name="suffix" value=".jar"/>
     <property name="installer-jar" value="${prefix}${version}${suffix}"/>
 	

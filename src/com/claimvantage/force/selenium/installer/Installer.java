@@ -11,6 +11,7 @@ import com.claimvantage.force.selenium.LoginPage;
 
 public class Installer {
 
+    private ManagedPackageInstaller task;
     private LoginPage login;
     private StartInstallPage sip;
     private UpdateDetailsPage udp;
@@ -22,6 +23,7 @@ public class Installer {
     private WebDriver driver;
     
     public Installer(ManagedPackageInstaller task) {
+        this.task = task;
         setDriverType(task);
         login = new LoginPage(driver, task);
         sip = new StartInstallPage(driver, task);
@@ -32,7 +34,7 @@ public class Installer {
         eip = new EndInstallPage(driver, task);
     }
     
-    public void execute(ManagedPackageInstaller task) {
+    public void execute() {
         login.getLoginPage(); //navigate to login page
         task.log("Logging in.", Project.MSG_INFO);
         login.loginAs(); //login

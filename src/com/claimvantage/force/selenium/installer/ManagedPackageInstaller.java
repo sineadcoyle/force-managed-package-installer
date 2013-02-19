@@ -18,12 +18,11 @@ public class ManagedPackageInstaller extends Task {
     private String pkgepw;
     private Map<String, String> profmap = new HashMap<String, String>();
     private String profiles;
-    private String propertyFailureMessage;
     
     public void execute() throws BuildException {
         try {
             validate();
-            new Installer(this).execute(this);
+            new Installer(this).execute();
         } catch (BuildException e) {
             throw e;
         } catch (Exception e) {
@@ -106,28 +105,24 @@ public class ManagedPackageInstaller extends Task {
             }
         }
     }
-    
-    public String getFailureMessage() {
-        return propertyFailureMessage;
-    }
-    
+
     private void validate() throws BuildException {
-        propertyFailureMessage = "";
+        String s = "";
         //check that required properties are null, blank or absent from build.properties file
         if (sfurl == null || sfurl.equals("") || sfurl.equals("${sf.url}")) {
-            propertyFailureMessage += "\nNo Saleforce URL specified.";
+            s += "\nNo Saleforce URL specified.";
         }
         if (sfun == null || sfun.equals("") || sfun.equals("${sf.un}")) {
-            propertyFailureMessage += "\nNo Saleforce username specified.";
+            s += "\nNo Saleforce username specified.";
         }
         if (sfpw == null || sfpw.equals("") || sfpw.equals("${sf.pw}")) {
-            propertyFailureMessage += "\nNo Saleforce password specified.";
+            s += "\nNo Saleforce password specified.";
         }
         if (pkgeurl == null || pkgeurl.equals("") || pkgeurl.equals("${pkge.url}")) {
-            propertyFailureMessage += "\nNo package URL specified.";
+            s += "\nNo package URL specified.";
         }
-        if (propertyFailureMessage.length()>0) {
-            throw new BuildException(propertyFailureMessage);
+        if (s.length() > 0) {
+            throw new BuildException(s);
         }
     }
 }

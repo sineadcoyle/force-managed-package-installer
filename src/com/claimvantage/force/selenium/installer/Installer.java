@@ -1,5 +1,10 @@
 package com.claimvantage.force.selenium.installer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.tools.ant.Project;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +29,7 @@ public class Installer {
     
     public Installer(ManagedPackageInstaller task) {
         this.task = task;
-        setDriverType(task);
+        setDriverType();
         login = new LoginPage(driver, task);
         sip = new StartInstallPage(driver, task);
         pdp = new PackageDetailsPage(driver, task);
@@ -64,18 +69,23 @@ public class Installer {
         eip.endInstall();
     }
     
-    private void setDriverType(ManagedPackageInstaller task) {
+    private void setDriverType() {
         String drivertype = task.getDrivertype();
         if ("firefox".equalsIgnoreCase(drivertype)) {
             driver = new FirefoxDriver();
         } else if ("chrome".equalsIgnoreCase(drivertype)) {
             task.log(System.getProperty("os.name"), Project.MSG_VERBOSE);
-            if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedriver for Mac
-                task.log("Using Mac OS, using chromedriver for Mac.", Project.MSG_INFO);
-                System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver");
-            } else {                                                    //otherwise use the .exe
-                task.log("Using chromedriver.exe", Project.MSG_INFO);
-                System.setProperty("webdriver.chrome.driver", "chromedriver/chromedriver.exe");
+            try {
+                if ((System.getProperty("os.name").contains("Mac"))) { //if Mac OS, use chromedriver for Mac
+                    task.log("Using Mac OS, using chromedriver for Mac.", Project.MSG_INFO);
+//                    System.setProperty("webdriver.chrome.driver", tmpFile.getCanonicalPath());
+                    System.setProperty("webdriver.chrome.driver", createExecutableTmpFile("chromedriver", "chromedriverMac", "").getCanonicalPath());
+                } else {                                                    //otherwise use the .exe
+                    task.log("Using chromedriver.exe", Project.MSG_INFO);
+                    System.setProperty("webdriver.chrome.driver", createExecutableTmpFile("chromedriver.exe", "chromedriverWindows", ".exe").getCanonicalPath());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-extensions"); //removes Chrome extensions for this browser instance
@@ -90,5 +100,34 @@ public class Installer {
         String browserName = caps.getBrowserName();
         String browserVersion = caps.getVersion();
         task.log(browserName + " " + browserVersion, Project.MSG_INFO);
+    }
+    
+    private File createExecutableTmpFile(String resourceName, String tmpFileName, String suffix) {
+        try {
+            File tmpFile = File.createTempFile(tmpFileName, suffix);
+            tmpFile.setExecutable(true);
+            task.log("Copying chromedriver to file " + tmpFile.getCanonicalPath(), Project.MSG_VERBOSE);
+            tmpFile.deleteOnExit();
+            InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName);
+            FileOutputStream fos = new FileOutputStream(tmpFile);
+            try {
+                task.log("Attempting to write file", Project.MSG_INFO);
+                if (is != null) {
+                    task.log(resourceName.getBytes().toString());
+                    byte[] buf = new byte[8192];
+                    int len;
+                    while ((len = is.read(buf)) != -1) {
+                        fos.write(buf, 0, len);
+                    }
+                } else {
+                    throw new RuntimeException("Could not open resource as stream " + resourceName);
+                }
+            } finally {
+                fos.close();
+            }
+            return tmpFile;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

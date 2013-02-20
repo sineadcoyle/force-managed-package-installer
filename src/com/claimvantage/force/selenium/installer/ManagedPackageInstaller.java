@@ -101,7 +101,8 @@ public class ManagedPackageInstaller extends Task {
                 throw new BuildException("Failed to parse profiles JSON string " 
                         + profiles 
                         + "; expecting it to be composed of simple key/value pairs but parse failed with error: " 
-                        + e.getMessage());
+                        + e.getMessage()
+                        + ". Please check JSON string to ensure it's validity.");
             }
         }
     }
@@ -110,16 +111,16 @@ public class ManagedPackageInstaller extends Task {
         String s = "";
         //check that required properties are null, blank or absent from build.properties file
         if (sfurl == null || sfurl.equals("") || sfurl.equals("${sf.url}")) {
-            s += "\nNo Saleforce URL specified.";
+            s += "\nNo Saleforce URL specified. Please specify property sf.url in Ant script or build.properties file.";
         }
         if (sfun == null || sfun.equals("") || sfun.equals("${sf.un}")) {
-            s += "\nNo Saleforce username specified.";
+            s += "\nNo Saleforce username specified. Please specify property sf.un in Ant script or build.properties file.";
         }
         if (sfpw == null || sfpw.equals("") || sfpw.equals("${sf.pw}")) {
-            s += "\nNo Saleforce password specified.";
+            s += "\nNo Saleforce password specified. Please specify property sf.pw in Ant script or build.properties file.";
         }
         if (pkgeurl == null || pkgeurl.equals("") || pkgeurl.equals("${pkge.url}")) {
-            s += "\nNo package URL specified.";
+            s += "\nNo package URL specified. Please specify property pkge.url in Ant script or build.properties file.";
         }
         if (s.length() > 0) {
             throw new BuildException(s);

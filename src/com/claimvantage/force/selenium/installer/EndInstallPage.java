@@ -20,7 +20,7 @@ public class EndInstallPage extends PageBase {
         
         if (isElementPresent(By.xpath(ORGANISATION_LOCKED))) {
             task.log("Package install failed with username: " + task.getSfun(), Project.MSG_ERR);
-            throw new RuntimeException("Package install failed. Org locked for changes due to installation of another package.");
+            throw new RuntimeException("Package install failed. Org locked for changes due to installation of another package. Please try again when other package finished installing.");
         } else {
             task.log("Package installed.", Project.MSG_INFO);
             driver.quit();

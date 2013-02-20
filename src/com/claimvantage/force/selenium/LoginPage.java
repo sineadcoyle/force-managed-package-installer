@@ -41,7 +41,8 @@ public class LoginPage extends PageBase{
         driver.findElement(By.xpath(LOGIN_XPATH)).click();
         
         if (!isElementPresent(By.xpath(HOME_TAB))) {
-            throw new RuntimeException("Failed to log in with username: " + task.getSfun() + " and password: " + task.getSfpw());
+            throw new RuntimeException("Failed to log in with username: " + task.getSfun()
+                    + ". Please check the validity your login credentials.");
         }
     }
     

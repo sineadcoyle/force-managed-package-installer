@@ -46,32 +46,26 @@
             	<include name="com/claimvantage/force/selenium/*.*"/>           	
             </fileset>
         	<fileset dir="chromedriver">
-        	    <include name="*.*"/>
+        	    <include name="*"/>
         	</fileset>
             <zipfileset src="lib/selenium-server-standalone-2.29.0.jar"/>
         	<zipfileset src="lib/ant.jar"/>
         	<zipfileset src="lib/json-simple-1.1.1.jar"/>
         </jar>
     </target>
-
-    <target name="propertyValues">
-        <property file="properties/build.properties"/>
-        <property name="profiles" value=""/>
-    	<echo message="Attempting to run installer with properties : ${driver.type}, ${sf.url}, ${sf.un}, ${sf.pw}, ${pkge.url}, ${pkge.pw} and ${profiles}"/>
-    </target>
     
-     <target name="run-installer-task" depends="propertyValues">
+     <target name="run-installer-task">
             <taskdef name="retrieveAndRunManagedPackageInstaller"
                 classname="com.claimvantage.force.selenium.installer.ManagedPackageInstaller"
             	classpath="${installer-jar}"/>
             <retrieveAndRunManagedPackageInstaller
-            	drivertype="${driver.type}"
-                sfurl="${sf.url}"
-                sfun="${sf.un}"
-                sfpw="${sf.pw}"
-                pkgeurl="${pkge.url}"
-                pkgepw="${pkge.pw}"
-                profiles="${profiles}"/>
+            	drivertype="firefox"
+            	sfurl="XXX"
+            	sf.un="XXX"
+            	sfpw="XXX"
+            	pkgeurl="XXX"
+            	pkgepw="XXX"
+            	profiles="{&quot;XXX&quot;:&quot;XXX&quot;}"/>
      </target>
 	
 </project>

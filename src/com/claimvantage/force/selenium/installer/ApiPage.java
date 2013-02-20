@@ -23,7 +23,7 @@ public class ApiPage extends PageBase {
             driver.findElement(By.xpath(NEXT_BUTTON_API)).click();
         } catch (NoSuchElementException e) {
             if (isElementPresent(By.xpath(NEWER_VERSION_INSTALLED_HEADER))) {
-                task.log("Newer version of package already installed", Project.MSG_ERR);
+                task.log("Newer version of package already installed. Please check package version in org and/or version attempting to install.", Project.MSG_ERR);
             }
             throw new RuntimeException(e.getMessage(), e);
         }

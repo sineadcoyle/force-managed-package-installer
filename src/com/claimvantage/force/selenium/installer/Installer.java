@@ -111,9 +111,8 @@ public class Installer {
             InputStream is = getClass().getClassLoader().getResourceAsStream(resourceName);
             FileOutputStream fos = new FileOutputStream(tmpFile);
             try {
-                task.log("Attempting to write file", Project.MSG_INFO);
+                task.log("Attempting to write file", Project.MSG_VERBOSE);
                 if (is != null) {
-                    task.log(resourceName.getBytes().toString());
                     byte[] buf = new byte[8192];
                     int len;
                     while ((len = is.read(buf)) != -1) {
@@ -123,6 +122,7 @@ public class Installer {
                     throw new RuntimeException("Could not open resource as stream " + resourceName);
                 }
             } finally {
+                is.close();
                 fos.close();
             }
             return tmpFile;

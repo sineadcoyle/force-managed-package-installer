@@ -55,13 +55,13 @@
     </target>
     
      <target name="run-installer-task">
-            <taskdef name="retrieveAndRunManagedPackageInstaller"
+            <taskdef name="sfInstall"
                 classname="com.claimvantage.force.selenium.installer.ManagedPackageInstaller"
             	classpath="${installer-jar}"/>
-            <retrieveAndRunManagedPackageInstaller
+            <sfInstall
             	drivertype="firefox"
             	sfurl="XXX"
-            	sf.un="XXX"
+            	sfun="XXX"
             	sfpw="XXX"
             	pkgeurl="XXX"
             	pkgepw="XXX"

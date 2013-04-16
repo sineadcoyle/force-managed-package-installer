@@ -8,7 +8,7 @@
     <!-- Build for different target orgs by adding additional "Invoke Ant" build steps that set this property appropriately -->
     
     <property name="prefix" value="ant-force-managed-package-installer-"/>
-    <property name="version" value="1.2"/>
+    <property name="version" value="1.21"/>
     <property name="suffix" value=".jar"/>
     <property name="installer-jar" value="${prefix}${version}${suffix}"/>
 	
@@ -48,7 +48,7 @@
         	<fileset dir="chromedriver">
         	    <include name="*"/>
         	</fileset>
-            <zipfileset src="lib/selenium-server-standalone-2.29.0.jar"/>
+            <zipfileset src="lib/selenium-server-standalone-2.32.0.jar"/>
         	<zipfileset src="lib/ant.jar"/>
         	<zipfileset src="lib/json-simple-1.1.1.jar"/>
         </jar>
@@ -65,7 +65,7 @@
             	sfpw="XXX"
             	pkgeurl="XXX"
             	pkgepw="XXX"
-            	profiles="{&quot;XXX&quot;:&quot;XXX&quot;}"/>
+            	profiles="XXX"/>
      </target>
 	
 </project>

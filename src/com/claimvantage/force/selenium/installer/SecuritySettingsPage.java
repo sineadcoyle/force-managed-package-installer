@@ -22,9 +22,11 @@ public class SecuritySettingsPage extends PageBase {
         waitForElementPresent(SECURITY_SETTINGS, 5);
         driver.findElement(By.xpath(SECURITY_SETTINGS)).click();
  
-        for (String key : task.getProfmap().keySet()) {
-            String value = (String) task.getProfmap().get(key);
-            driver.findElement(By.xpath("//tr[th[contains(text(), '" + key + "')]]/td/select/option[@value='" + value + "']")).click();
+        if (task.getProfmap() != null) {
+            for (String key : task.getProfmap().keySet()) {
+                String value = (String) task.getProfmap().get(key);
+                driver.findElement(By.xpath("//tr[th[contains(text(), '" + key + "')]]/td/select/option[@value='" + value + "']")).click();
+            }
         }
 
         Capabilities cp = ((RemoteWebDriver) driver).getCapabilities();

@@ -48,7 +48,7 @@
         	<fileset dir="chromedriver">
         	    <include name="*"/>
         	</fileset>
-            <zipfileset src="lib/selenium-server-standalone-2.32.0.jar"/>
+            <zipfileset src="lib/selenium-server-standalone-2.33.0.jar"/>
         	<zipfileset src="lib/ant.jar"/>
         	<zipfileset src="lib/json-simple-1.1.1.jar"/>
         </jar>
@@ -64,8 +64,7 @@
             	sfun="XXX"
             	sfpw="XXX"
             	pkgeurl="XXX"
-            	pkgepw="XXX"
-            	profiles="XXX"/>
+            	pkgepw="XXX"/>
      </target>
 	
 </project>

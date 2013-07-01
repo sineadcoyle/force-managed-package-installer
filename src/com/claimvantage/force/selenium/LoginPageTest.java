@@ -33,8 +33,8 @@ public class LoginPageTest extends TestBase {
     
     @Test
     public void testElementPresentTrue() {
-        System.out.println(isElementPresent(driver, By.xpath("//div[p[label[@for='username']]]/span/input")));
-        assert(isElementPresent(driver, By.xpath("//div[p[label[@for='username']]]/span/input")));
+        System.out.println(isElementPresent(driver, By.xpath("//input[@id='username']")));
+        assert(isElementPresent(driver, By.xpath("//input[@id='username']")));
     }
     
     @Test

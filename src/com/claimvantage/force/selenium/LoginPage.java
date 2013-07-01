@@ -6,9 +6,9 @@ import org.openqa.selenium.By;
 import com.claimvantage.force.selenium.installer.ManagedPackageInstaller;
 
 public class LoginPage extends PageBase{
-    private static final String UN_XPATH = "//div[p[label[@for='username']]]/span/input";
-    private static final String PW_XPATH = "//div[p[label[@for='password']]]/span/input";
-    private static final String LOGIN_XPATH = "//input[@class = 'loginButton']";
+    private static final String UN_XPATH = "//input[@id='username']";
+    private static final String PW_XPATH = "//input[@id='password']";
+    private static final String LOGIN_XPATH = "//button[@id = 'Login']";
     private static final String HOME_TAB = "//ul[@id='tabBar']/li/a[text() = 'Home']";
     
     private String SF_URL;
